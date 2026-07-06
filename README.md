@@ -1,163 +1,171 @@
-# AutoHeal
+<div align="center">
 
-> An autonomous self-healing machine learning pipeline that continuously monitors model performance, detects concept drift, and automatically retrains models to maintain prediction accuracy.
+# 🩺 AutoHeal
 
-## Overview
+### An autonomous self-healing ML pipeline that detects concept drift and automatically retrains itself — no human in the loop.
 
-AutoHeal is a machine learning framework designed to automatically detect performance degradation caused by concept drift and recover model performance through autonomous retraining.
+[![Python](https://img.shields.io/badge/Python-3-blue?style=flat-square&logo=python)](https://python.org)
+[![scikit--learn](https://img.shields.io/badge/scikit--learn-RandomForest-orange?style=flat-square&logo=scikitlearn)](https://scikit-learn.org)
+[![Pandas](https://img.shields.io/badge/Pandas-DataFrames-150458?style=flat-square&logo=pandas)](https://pandas.pydata.org)
+[![Matplotlib](https://img.shields.io/badge/Matplotlib-Visualization-11557C?style=flat-square&logo=plotly)](https://matplotlib.org)
 
-Unlike traditional machine learning systems that require manual intervention, AutoHeal continuously monitors prediction accuracy, detects drift using rolling performance metrics, and redeploys an updated model whenever necessary.
+</div>
 
-The project evaluates its effectiveness using the Breast Cancer Wisconsin Diagnostic and Iris datasets, and compares its performance against conventional monitoring strategies (no monitoring, and fixed-schedule retraining).
+---
 
-## Features
+## ⚡ What This Does
 
-- Automatic concept drift detection
-- Autonomous model retraining
-- Continuous performance monitoring
-- Rolling accuracy analysis
-- Random Forest classification
-- Performance comparison with baseline approaches
-- Classification reports
-- Confusion matrix generation
-- Experimental result visualization
-- Results automatically saved as CSV and PNG files
+Traditional ML systems silently degrade in production as data drifts away from what they were trained on — someone has to notice the drop and manually retrain. **AutoHeal removes the human from that loop.** It continuously monitors rolling prediction accuracy, automatically detects when performance falls below a threshold, retrains the model on the fly, and redeploys it — all without intervention.
 
-## Workflow
+The pipeline is evaluated on the **Breast Cancer Wisconsin Diagnostic** and **Iris** datasets, with injected concept drift, and benchmarked against two baselines: no monitoring at all, and fixed-schedule retraining.
 
-```text
-Train Initial Model
-        |
-        v
-Monitor Predictions
-        |
-        v
-Calculate Rolling Accuracy
-        |
-        v
-   Performance Drop?
-    |            |
-   No           Yes
-    |            |
-Continue    Detect Drift
-                 |
-                 v
-          Retrain Model
-                 |
-                 v
-       Deploy Updated Model
-                 |
-                 v
-       Continue Monitoring
-```
+---
 
-## Tech Stack
+## 🎯 Results
 
-- Python 3
-- Scikit-learn
-- NumPy
-- Pandas
-- Matplotlib
+| Method | Accuracy During Drift | Retrains Needed | Human Input Required |
+|---|---|---|---|
+| No monitoring | Low (degrades and stays degraded) | 0 | Yes |
+| Scheduled retraining | Moderate | 1 (fixed schedule) | Yes |
+| **AutoHeal (proposed)** | **High (auto-recovers)** | **Only as needed** | **No** |
 
-## Project Structure
-AUTO-HEAL/
-|-- autoheal.py                       Main pipeline script
-|-- requirements.txt                  Python dependencies
-|-- .gitignore                        Files/folders excluded from version control
-|-- README.md                         Project documentation
-|-- AutoHeal_Methodology_Diagram.pdf  Methodology diagram
-|-- docs/
-|   +-- images/                       Sample result plots shown in this README
-+-- results/                          Generated on each run (CSVs + PNGs), not tracked in git
-## Installation
-
-Clone the repository:
-
-```bash
-git clone https://github.com/ShreyaSindhe/AUTO-HEAL.git
-```
-
-Move into the project:
-
-```bash
-cd AUTO-HEAL
-```
-
-Install dependencies:
-
-```bash
-pip install -r requirements.txt
-```
-
-Run the project:
-
-```bash
-python autoheal.py
-```
-
-Each run regenerates the `results/` folder with the CSV summaries and PNG figures shown below.
-
-## Experiments
-
-The project performs:
-
-- Initial model training
-- Concept drift simulation
-- Drift detection
-- Automatic retraining
-- Recovery evaluation
-- Baseline comparison (no monitoring vs. scheduled retraining vs. AutoHeal)
-- Statistical analysis across multiple runs
-- Visualization of results
-
-## Results
-
-AutoHeal demonstrates the ability to:
-
-- Detect concept drift automatically
-- Restore model accuracy after degradation
-- Reduce manual intervention
-- Outperform traditional monitoring strategies in maintaining prediction performance
-
-### Accuracy Over Time
-
-Rolling accuracy on the Breast Cancer dataset through clean, drift, and recovery phases. AutoHeal detects the drift, triggers a retrain, and restores accuracy above the threshold.
+AutoHeal detects the drift, triggers a retrain automatically, and restores accuracy back above the threshold — without anyone watching the dashboard.
 
 ![Accuracy over time](docs/images/fig1_accuracy_over_time.png)
 
-### Method Comparison
+---
 
-AutoHeal compared against no-monitoring and fixed-schedule retraining baselines.
+## 🧠 How It Works
+
+Train Initial Model
+↓
+Monitor Predictions
+↓
+Calculate Rolling Accuracy
+↓
+Performance Drop?
+↓             ↓
+No            Yes
+↓             ↓
+Continue     Detect Drift
+↓
+Retrain Model
+↓
+Deploy Updated Model
+↓
+Continue Monitoring
+
+Drift is detected using a rolling-window accuracy check: once accuracy falls below threshold for several consecutive windows, a retrain is triggered automatically on fresh data, and the new model is deployed in place of the old one.
+
+---
+
+## 📊 More Results
+
+### Method Comparison
 
 ![Method comparison](docs/images/fig2_method_comparison.png)
 
-### Breast Cancer - Five Run Recovery
-
-Accuracy recovery across five independent runs on the Breast Cancer dataset.
+### Breast Cancer — Five Independent Runs
 
 ![Breast Cancer five runs](docs/images/fig3_bc_five_runs.png)
 
-### Dataset Comparison
-
-Baseline, drift, and recovery accuracy compared across the Breast Cancer and Iris datasets.
+### Dataset Comparison — Breast Cancer vs Iris
 
 ![Dataset comparison](docs/images/fig4_dataset_comparison.png)
 
 ### Combined Summary
 
-A combined view of all key results for reporting purposes.
-
 ![Combined results](docs/images/fig5_combined_paper.png)
 
-## Future Work
+---
 
-- Deep learning support
-- Real-time streaming data
-- Additional drift detection algorithms (e.g. ADWIN, Page-Hinkley)
-- MLOps integration (experiment tracking, model registry, CI/CD)
-- Cloud deployment
-- Interactive monitoring dashboard
+## 🏗️ Architecture
 
-## Author
+- **Model:** Random Forest Classifier (scikit-learn)
+- **Drift detection:** Rolling-window accuracy monitoring with consecutive-failure threshold
+- **Datasets:** Breast Cancer Wisconsin Diagnostic, Iris (with injected concept drift)
+- **Retraining trigger:** Automatic, threshold-based (no manual scheduling)
+- **Outputs:** CSV result summaries + PNG visualizations, generated per run
 
-*Shreya Sindhe*
+---
+
+## ⚙️ Setup
+
+### Prerequisites
+- Python 3
+- pip
+
+### Run it
+
+```bash
+# Clone the repo
+git clone https://github.com/ShreyaSindhe/AUTO-HEAL.git
+cd AUTO-HEAL
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Run the pipeline
+python autoheal.py
+```
+
+Each run regenerates a `results/` folder containing:
+- `breast_cancer_results.csv`, `iris_results.csv`, `comparison_results.csv`
+- `fig1_accuracy_over_time.png` through `fig5_combined_paper.png`
+
+---
+
+## 🔬 Experiments
+
+The pipeline runs:
+
+- Initial model training on clean data
+- Concept drift simulation
+- Rolling-accuracy drift detection
+- Automatic retraining on drift detection
+- Recovery evaluation post-retrain
+- Baseline comparison (no monitoring vs. scheduled retraining vs. AutoHeal)
+- Statistical analysis across multiple runs
+- Automatic visualization of all results
+
+---
+
+## 📁 Project Structure
+
+```
+AUTO-HEAL/
+├── autoheal.py                       # Main pipeline script
+├── requirements.txt                  # Python dependencies
+├── .gitignore
+├── README.md
+├── AutoHeal_Methodology_Diagram.pdf  # Methodology diagram
+├── docs/
+│   └── images/                       # Result plots shown in this README
+└── results/                          # Generated per run (CSVs + PNGs) — not tracked in git
+```
+
+---
+
+## 🚀 Future Work
+
+- [ ] Additional drift detection algorithms (ADWIN, Page-Hinkley)
+- [ ] MLOps integration — experiment tracking, model registry, CI/CD
+- [ ] Real-time streaming data support
+- [ ] Deep learning model support
+- [ ] Cloud deployment
+- [ ] Interactive monitoring dashboard
+
+---
+
+## 🛠️ Tech Stack
+
+`Python` `scikit-learn` `Pandas` `NumPy` `Matplotlib`
+
+---
+
+## 👥 Contributors
+
+| Name | GitHub |
+|---|---|
+| Shreya Sindhe | [@ShreyaSindhe](https://github.com/ShreyaSindhe) |
+| Tharun C | [@Tharunnxx](https://github.com/Tharunnxx) |
