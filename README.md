@@ -60,3 +60,104 @@ Continue    Detect Drift
 - Matplotlib
 
 ## Project Structure
+AUTO-HEAL/
+|-- autoheal.py                       Main pipeline script
+|-- requirements.txt                  Python dependencies
+|-- .gitignore                        Files/folders excluded from version control
+|-- README.md                         Project documentation
+|-- AutoHeal_Methodology_Diagram.pdf  Methodology diagram
+|-- docs/
+|   +-- images/                       Sample result plots shown in this README
++-- results/                          Generated on each run (CSVs + PNGs), not tracked in git
+## Installation
+
+Clone the repository:
+
+```bash
+git clone https://github.com/ShreyaSindhe/AUTO-HEAL.git
+```
+
+Move into the project:
+
+```bash
+cd AUTO-HEAL
+```
+
+Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+Run the project:
+
+```bash
+python autoheal.py
+```
+
+Each run regenerates the `results/` folder with the CSV summaries and PNG figures shown below.
+
+## Experiments
+
+The project performs:
+
+- Initial model training
+- Concept drift simulation
+- Drift detection
+- Automatic retraining
+- Recovery evaluation
+- Baseline comparison (no monitoring vs. scheduled retraining vs. AutoHeal)
+- Statistical analysis across multiple runs
+- Visualization of results
+
+## Results
+
+AutoHeal demonstrates the ability to:
+
+- Detect concept drift automatically
+- Restore model accuracy after degradation
+- Reduce manual intervention
+- Outperform traditional monitoring strategies in maintaining prediction performance
+
+### Accuracy Over Time
+
+Rolling accuracy on the Breast Cancer dataset through clean, drift, and recovery phases. AutoHeal detects the drift, triggers a retrain, and restores accuracy above the threshold.
+
+![Accuracy over time](docs/images/fig1_accuracy_over_time.png)
+
+### Method Comparison
+
+AutoHeal compared against no-monitoring and fixed-schedule retraining baselines.
+
+![Method comparison](docs/images/fig2_method_comparison.png)
+
+### Breast Cancer - Five Run Recovery
+
+Accuracy recovery across five independent runs on the Breast Cancer dataset.
+
+![Breast Cancer five runs](docs/images/fig3_bc_five_runs.png)
+
+### Dataset Comparison
+
+Baseline, drift, and recovery accuracy compared across the Breast Cancer and Iris datasets.
+
+![Dataset comparison](docs/images/fig4_dataset_comparison.png)
+
+### Combined Summary
+
+A combined view of all key results for reporting purposes.
+
+![Combined results](docs/images/fig5_combined_paper.png)
+
+## Future Work
+
+- Deep learning support
+- Real-time streaming data
+- Additional drift detection algorithms (e.g. ADWIN, Page-Hinkley)
+- MLOps integration (experiment tracking, model registry, CI/CD)
+- Cloud deployment
+- Interactive monitoring dashboard
+
+## Author
+
+*Shreya Sindhe*
