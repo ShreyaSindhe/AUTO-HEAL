@@ -40,7 +40,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 
 # -- Output folder -------------------------------------------------------------
-# os.makedirs("results", exist_ok=True) # Commented out to prevent folder creation
+os.makedirs("results", exist_ok=True)
 
 print("=" * 65)
 print("  AutoHeal - Self-Healing ML Pipeline")
@@ -316,24 +316,24 @@ print(f"  Confusion Matrix:\n  {cm}")
 # ==================================================================
 # SAVE RESULTS TO CSV
 # ==================================================================
-# bc_df.to_csv("results/breast_cancer_results.csv", index=False) # Commented out to prevent file saving
-# iris_df.to_csv("results/iris_results.csv", index=False) # Commented out to prevent file saving
+bc_df.to_csv("results/breast_cancer_results.csv", index=False)
+iris_df.to_csv("results/iris_results.csv", index=False)
 
 comparison_df = pd.DataFrame([
     {"Method": "No monitoring",       "Accuracy During Drift": f"{no_mon_acc:.2%}", "Retrains": 0,              "Human Input": "Yes"},
     {"Method": "Scheduled retraining","Accuracy During Drift": f"{sched_acc:.2%}", "Retrains": 1,              "Human Input": "Yes"},
     {"Method": "AutoHeal (proposed)", "Accuracy During Drift": f"{ah_acc:.2%}",   "Retrains": ah_retrain_count,"Human Input": "No"},
 ])
-# comparison_df.to_csv("results/comparison_results.csv", index=False) # Commented out to prevent file saving
-# print("\n  Results saved to results/ folder.") # Commented out as files are not saved
+comparison_df.to_csv("results/comparison_results.csv", index=False)
+print("\n  Results saved to results/ folder.")
 
 # Display dataframes directly instead of saving
 print("\nBreast Cancer Results (DataFrame):")
-display(bc_df)
+print(bc_df)
 print("\nIris Results (DataFrame):")
-display(iris_df)
+print(iris_df)
 print("\nComparison Results (DataFrame):")
-display(comparison_df)
+print(comparison_df)
 
 
 # ==================================================================
@@ -387,7 +387,7 @@ ax1.set_title("Fig 1: Breast Cancer - Accuracy over time", fontsize=11, fontweig
 ax1.legend(fontsize=9, loc="lower right")
 ax1.grid(True, alpha=0.3)
 # plt.tight_layout()
-# plt.savefig("results/fig1_accuracy_over_time.png", dpi=150, bbox_inches="tight", facecolor="white") # Commented out to prevent file saving
+plt.savefig("results/fig1_accuracy_over_time.png", dpi=150, bbox_inches="tight", facecolor="white")
 plt.show()
 plt.close()
 # print("  fig1_accuracy_over_time.png saved.") # Commented out as files are not saved
@@ -414,7 +414,7 @@ ax2.set_title("Fig 2: Method comparison (Breast Cancer)", fontsize=11, fontweigh
 ax2.legend(fontsize=9)
 ax2.grid(True, alpha=0.3, axis="y")
 plt.tight_layout()
-# plt.savefig("results/fig2_method_comparison.png", dpi=150, bbox_inches="tight", facecolor="white") # Commented out to prevent file saving
+plt.savefig("results/fig2_method_comparison.png", dpi=150, bbox_inches="tight", facecolor="white")
 plt.show()
 plt.close()
 # print("  fig2_method_comparison.png saved.") # Commented out as files are not saved
@@ -442,7 +442,7 @@ ax3.set_title("Fig 3: Breast Cancer - Accuracy across 5 runs", fontsize=11, font
 ax3.legend(fontsize=9)
 ax3.grid(True, alpha=0.3, axis="y")
 plt.tight_layout()
-# plt.savefig("results/fig3_bc_five_runs.png", dpi=150, bbox_inches="tight", facecolor="white") # Commented out to prevent file saving
+plt.savefig("results/fig3_bc_five_runs.png", dpi=150, bbox_inches="tight", facecolor="white")
 plt.show()
 plt.close()
 # print("  fig3_bc_five_runs.png saved.") # Commented out as files are not saved
@@ -475,7 +475,7 @@ ax4.set_title("Fig 4: Dataset comparison - Breast Cancer vs Iris (mean \u00b1 st
 ax4.legend(fontsize=9)
 ax4.grid(True, alpha=0.3, axis="y")
 plt.tight_layout()
-# plt.savefig("results/fig4_dataset_comparison.png", dpi=150, bbox_inches="tight", facecolor="white") # Commented out to prevent file saving
+plt.savefig("results/fig4_dataset_comparison.png", dpi=150, bbox_inches="tight", facecolor="white")
 plt.show()
 plt.close()
 # print("  fig4_dataset_comparison.png saved.") # Commented out as files are not saved
@@ -511,7 +511,7 @@ axR.legend(fontsize=9)
 axR.grid(True, alpha=0.3, axis="y")
 
 plt.tight_layout()
-# plt.savefig("results/fig5_combined_paper.png", dpi=150, bbox_inches="tight", facecolor="white") # Commented out to prevent file saving
+plt.savefig("results/fig5_combined_paper.png", dpi=150, bbox_inches="tight", facecolor="white")
 plt.show()
 plt.close()
 # print("  fig5_combined_paper.png saved.") # Commented out as files are not saved
@@ -538,74 +538,3 @@ print(f"  {'AutoHeal (proposed)':<35} {ah_acc:.2%}      {ah_retrain_count}      
 print(f"\n  AutoHeal improvement vs no-monitor:     +{(ah_acc - no_mon_acc)*100:.1f} pp")
 print(f"  AutoHeal improvement vs scheduled:      +{(ah_acc - sched_acc)*100:.1f} pp")
 print("\n" + "=" * 65)
-
-"""### Figure 4: Dataset comparison (Breast Cancer vs Iris)"""
-
-import matplotlib.pyplot as plt
-import numpy as np
-
-# Assuming bc_stats and iris_stats are already defined in the kernel from previous execution
-# If not, you would need to re-run the relevant parts of the main script or redefine them.
-
-fig4, ax4 = plt.subplots(figsize=(7, 4))
-categories = ["Baseline", "Min Drift", "Recovery"]
-bc_vals   = [bc_stats["baseline_mean"]*100,   bc_stats["drift_mean"]*100,   bc_stats["recovery_mean"]*100]
-iris_vals = [iris_stats["baseline_mean"]*100, iris_stats["drift_mean"]*100, iris_stats["recovery_mean"]*100]
-bc_errs   = [bc_stats["baseline_std"]*100,    bc_stats["drift_std"]*100,    bc_stats["recovery_std"]*100]
-iris_errs = [iris_stats["baseline_std"]*100,  iris_stats["drift_std"]*100,  iris_stats["recovery_std"]*100]
-
-xp = np.arange(len(categories))
-w  = 0.3
-ax4.bar(xp - w/2, bc_vals,   w, yerr=bc_errs,   capsize=4,
-        label="Breast Cancer", color="#185FA5", alpha=0.85)
-ax4.bar(xp + w/2, iris_vals, w, yerr=iris_errs, capsize=4,
-        label="Iris", color="#1D9E75", alpha=0.85)
-
-for i, (bv, iv) in enumerate(zip(bc_vals, iris_vals)):
-    ax4.text(i - w/2, bv + 2.5, f"{bv:.1f}%", ha="center", fontsize=9, fontweight="bold")
-    ax4.text(i + w/2, iv + 2.5, f"{iv:.1f}%", ha="center", fontsize=9, fontweight="bold")
-
-ax4.axhline(y=75, color="#BA7517", linestyle="--", linewidth=1.2, label="Threshold (75%)")
-ax4.set_xticks(xp)
-ax4.set_xticklabels(categories, fontsize=11)
-ax4.set_ylim(0, 115)
-ax4.set_ylabel("Accuracy (%)", fontsize=11)
-ax4.set_title("Fig 4: Dataset comparison - Breast Cancer vs Iris (mean \u00b1 std)", fontsize=11, fontweight="bold")
-ax4.legend(fontsize=9)
-ax4.grid(True, alpha=0.3, axis="y")
-plt.tight_layout()
-plt.show()
-plt.close()
-
-"""### Figure 3: Breast Cancer - All 5 runs recovery comparison"""
-
-import matplotlib.pyplot as plt
-import numpy as np
-
-# Assuming bc_df is already defined in the kernel from previous execution
-# If not, you would need to re-run the relevant parts of the main script or redefine it.
-
-fig3, ax3 = plt.subplots(figsize=(8, 4))
-run_labels = [f"Run {i+1}" for i in range(5)]
-x_pos = np.arange(5)
-width = 0.25
-
-ax3.bar(x_pos - width, bc_df["baseline_acc"] * 100,
-        width, label="Baseline", color="#1D9E75", alpha=0.85)
-ax3.bar(x_pos,         bc_df["min_drift_acc"] * 100,
-        width, label="Min during drift", color="#E24B4A", alpha=0.85)
-ax3.bar(x_pos + width, bc_df["recovery_acc"] * 100,
-        width, label="After recovery", color="#185FA5", alpha=0.85)
-
-ax3.axhline(y=75, color="#BA7517", linestyle="--", linewidth=1.2,
-            label="Threshold (75%)")
-ax3.set_xticks(x_pos)
-ax3.set_xticklabels(run_labels)
-ax3.set_ylim(0, 110)
-ax3.set_ylabel("Accuracy (%)", fontsize=11)
-ax3.set_title("Fig 3: Breast Cancer - Accuracy across 5 runs", fontsize=11, fontweight="bold")
-ax3.legend(fontsize=9)
-ax3.grid(True, alpha=0.3, axis="y")
-plt.tight_layout()
-plt.show()
-plt.close()
