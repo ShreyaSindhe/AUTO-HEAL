@@ -8,7 +8,6 @@
 [![scikit--learn](https://img.shields.io/badge/scikit--learn-RandomForest-orange?style=flat-square&logo=scikitlearn)](https://scikit-learn.org)
 [![Pandas](https://img.shields.io/badge/Pandas-DataFrames-150458?style=flat-square&logo=pandas)](https://pandas.pydata.org)
 [![Matplotlib](https://img.shields.io/badge/Matplotlib-Visualization-11557C?style=flat-square&logo=plotly)](https://matplotlib.org)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE)
 
 </div>
 
